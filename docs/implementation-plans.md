@@ -516,4 +516,3 @@ application around multiple parsers today.
 - [ ] Coverage failure and stale-report policies are explicit.
 - [ ] Packed CLI works without Python in a clean project.
 - [ ] Score-affecting dependency updates run fixture/differential checks.
-
