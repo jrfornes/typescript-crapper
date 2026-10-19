@@ -7,19 +7,28 @@ multi-language complexity or silently change established results.
 
 ## Documents
 
-1. [Source architecture](crapper-master-architecture.md) explains the current
+1. [Version 1 decisions](v1-decisions.md) is the authoritative product and
+   metric contract.
+2. [Compiler API analysis rules](compiler-api-analysis-rules.md) maps the v1
+   contract to TypeScript Compiler API syntax.
+3. [Acceptance test matrix](acceptance-test-matrix.md) defines the required
+   automated behavior and end-to-end golden project.
+4. [Source architecture](crapper-master-architecture.md) explains the current
    pipeline, data model, CLI, coverage workflow, outputs, and failure behavior.
-2. [TypeScript compatibility specification](typescript-compatibility-spec.md)
+5. [TypeScript compatibility specification](typescript-compatibility-spec.md)
    is the testable contract for source discovery, function extraction,
    complexity, namespaces, LCOV, and Express route handlers.
-3. [Implementation blueprint](typescript-crapper-blueprint.md) proposes a
+6. [Implementation blueprint](typescript-crapper-blueprint.md) proposes a
    TypeScript-native package structure, delivery phases, and test strategy.
-4. [Implementation plans](implementation-plans.md) provides staged plans for
+7. [Implementation plans](implementation-plans.md) provides staged plans for
    the TypeScript Compiler API and tree-sitter, with deliverables and exit
    criteria.
-5. [Decisions and risks](decisions-and-risks.md) lists behavior that is
+8. [Decisions and risks](decisions-and-risks.md) lists behavior that is
    ambiguous, surprising, incomplete, or intentionally pending a product
    decision.
+
+Coding agents should start with the repository-root `AGENTS.md`, which defines
+the reading order, work sequence, invariants, and scope.
 
 ## Scope
 
@@ -30,18 +39,20 @@ no Python runtime.
 
 The compatibility baseline includes TypeScript, TSX, and JavaScript because
 `crapper-master` puts all of these extensions in its internal `"typescript"`
-language bucket. Whether the replacement should truly accept only TypeScript
-syntax and extensions is an explicit decision recorded in
-[Decisions and risks](decisions-and-risks.md).
+language bucket. Version 1 deliberately accepts only `.ts`, `.tsx`, `.mts`,
+and `.cts`, as recorded in [Version 1 decisions](v1-decisions.md).
 
-## Evidence hierarchy
+## Source evidence hierarchy
 
-When sources disagree, use this order:
+For claims about `crapper-master`, use this order:
 
 1. Tests in `crapper-master/tests/`
 2. Runtime code in `crapper-master/src/crapper/`
 3. `crapper-master/README.md`
 4. Generated UML and examples
+
+For the new implementation, `v1-decisions.md` and
+`compiler-api-analysis-rules.md` override inherited behavior.
 
 The generated UML is stale in at least one important way: it references
 `crapper.languages.language`, `LanguageFactory`, and `UnknownFactory`, but no

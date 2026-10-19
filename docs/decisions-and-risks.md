@@ -250,20 +250,14 @@ versions compare rounded or full precision.
 - The comment that metrics replacement is atomic is not supported by the
   direct `write_text` implementation.
 
-## Recommended initial decisions
+## Resolution
 
-For a low-surprise first release:
+These risks have now been resolved for version 1 in
+`v1-decisions.md`. In particular, v1 uses the TypeScript Compiler API,
+accepts TypeScript extensions only, includes additional modern function forms,
+uses a named metric version, treats coverage-generation failure separately
+from 0% function coverage, and writes EDN atomically.
 
-1. Analyze `.ts`, `.tsx`, `.mts`, and `.cts`; make JavaScript an explicit
-   opt-in if desired.
-2. Use tree-sitter and preserve existing complexity values.
-3. Add generators and class-field arrows only as a documented metric-version
-   enhancement.
-4. Support `--use-existing-coverage` before automatic test execution.
-5. Keep EDN compatibility and add internal stable IDs.
-6. Fail CI on coverage-generation errors by default, with a compatibility
-   option to score missing coverage as 0%.
-7. Warn on parse errors, duplicate identities, ambiguous LCOV, and unmatched
-   LCOV.
-8. Use atomic output and guarded cleanup.
+This document remains useful as design rationale. It is not authoritative when
+an alternative conflicts with the version 1 decisions.
 

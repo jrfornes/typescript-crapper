@@ -11,6 +11,9 @@ This document provides two executable plans for building
 Both plans produce a TypeScript CLI with no Python runtime. They share the
 same scoring, LCOV, discovery, output, and verification layers.
 
+Version 1 has selected **Plan A**. `v1-decisions.md` is authoritative where
+the alternatives or recommendations in this document differ.
+
 ## Decision summary
 
 | Requirement | Plan A: Compiler API | Plan B: tree-sitter |

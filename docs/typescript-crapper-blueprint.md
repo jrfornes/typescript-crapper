@@ -80,14 +80,15 @@ tests do not run npm, Git, or coverage tools.
 
 ```ts
 export interface ParsedFunction {
+  id: string;
   name: string;
   namespace: string;
   complexity: number;
   startLine: number;
   endLine: number;
   path: string;
-  startByte: number;
-  endByte: number;
+  startOffset: number;
+  endOffset: number;
 }
 
 export interface Entry extends ParsedFunction {
@@ -138,9 +139,10 @@ Costs:
 - JavaScript/JSX and malformed-source behavior need deliberate handling;
 - byte spans require UTF-8 conversion because compiler offsets are UTF-16.
 
-Recommendation: use tree-sitter for a compatibility-first release. If the
-compiler API is preferred, build the golden fixture suite first and document
-every intended score change. Pin parser and grammar versions in either case.
+Version 1 uses the TypeScript Compiler API, as decided in
+`v1-decisions.md`. Build the golden fixture suite first, document every
+intentional score change, and pin the `typescript` dependency. Tree-sitter
+remains a documented alternative only for a future strict-parity implementation.
 
 ## Pure computation layer
 
