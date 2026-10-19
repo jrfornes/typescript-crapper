@@ -371,4 +371,3 @@ Version 1 is ready when:
 - expected differential changes are reviewed;
 - type-check, tests, package installation, and CLI smoke tests pass on all
   supported platforms.
-

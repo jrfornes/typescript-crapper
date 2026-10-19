@@ -129,4 +129,3 @@ A completed implementation must report:
 - expected differences from `crapper-master`;
 - metric-version changes, if any;
 - coverage-generation and parse diagnostics demonstrated in tests.
-

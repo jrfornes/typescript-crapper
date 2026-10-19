@@ -324,4 +324,3 @@ When upgrading `typescript`:
 4. run malformed-source diagnostics;
 5. compare output against the previous metric version;
 6. reject unexplained score changes.
-

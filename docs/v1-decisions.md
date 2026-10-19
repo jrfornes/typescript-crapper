@@ -334,4 +334,3 @@ Sorting uses:
 
 Threshold comparison uses the stored four-decimal CRAP value and is strictly
 greater-than; equality passes.
-
