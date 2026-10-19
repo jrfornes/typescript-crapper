@@ -14,7 +14,10 @@ multi-language complexity or silently change established results.
    complexity, namespaces, LCOV, and Express route handlers.
 3. [Implementation blueprint](typescript-crapper-blueprint.md) proposes a
    TypeScript-native package structure, delivery phases, and test strategy.
-4. [Decisions and risks](decisions-and-risks.md) lists behavior that is
+4. [Implementation plans](implementation-plans.md) provides staged plans for
+   the TypeScript Compiler API and tree-sitter, with deliverables and exit
+   criteria.
+5. [Decisions and risks](decisions-and-risks.md) lists behavior that is
    ambiguous, surprising, incomplete, or intentionally pending a product
    decision.
 
