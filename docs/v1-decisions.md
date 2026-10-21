@@ -17,8 +17,8 @@ When documents disagree, use this order:
 5. `docs/typescript-compatibility-spec.md`
 6. `docs/crapper-master-architecture.md`
 
-The compatibility and architecture documents describe `crapper-master`; they
-are evidence, not requirements where this file intentionally differs.
+The compatibility and architecture documents describe the legacy Python tool;
+they are evidence, not requirements where this file intentionally differs.
 
 ## ADR-001: parser
 
@@ -158,7 +158,7 @@ When scoring an entry:
 - use an iterative traversal or another implementation proven safe for deeply
   generated expressions.
 
-These rules intentionally improve on `crapper-master` by counting logical
+These rules intentionally improve on the inherited Python baseline by counting logical
 assignments and by recognizing additional function forms.
 
 ## ADR-006: namespaces
@@ -200,7 +200,7 @@ The compiler exposes UTF-16 offsets. Store these as `startOffset` and
 `<normalized project-relative path>:<startOffset>`.
 
 Coverage association uses lines, not offsets. UTF-8 byte compatibility with
-`crapper-master` is not required.
+the legacy Python tool is not required.
 
 ## ADR-008: route handlers
 
@@ -269,7 +269,7 @@ Final v1 supports:
 ```
 
 Default behavior attempts built-in coverage generation, matching the familiar
-`crapper-master` workflow. Implementation may ship read-only milestones first,
+the familiar legacy crapper workflow. Implementation may ship read-only milestones first,
 but the final v1 default is not complexity-only.
 
 Built-in generation order per package:

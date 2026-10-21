@@ -1,9 +1,9 @@
 # Version 1 acceptance test matrix
 
 This document is the implementation checklist for automated tests. A coding
-agent should convert each required row into an explicit test. “Inherited”
-means the expected behavior comes from `crapper-master`; “v1” means an
-intentional TypeScript-native decision.
+agent should convert each required row into an explicit test. “Inherited” means the expected behavior comes from the legacy Python crapper
+baseline documented in `typescript-compatibility-spec.md`; “v1” means an
+intentional TypeScript-native decision. Automated expectations live in `test/`.
 
 ## Test conventions
 
@@ -29,8 +29,7 @@ intentional TypeScript-native decision.
 | SCORE-08 | threshold equals stored CRAP | pass | inherited |
 | SCORE-09 | threshold below stored CRAP | exit 2 | inherited |
 
-Reference: `crapper-master/tests/test_crap.py`,
-`src/crapper/crap.py`.
+See `test/unit/scoring.test.ts` and `src/scoring.ts`.
 
 ## 2. File discovery
 
@@ -50,8 +49,7 @@ Reference: `crapper-master/tests/test_crap.py`,
 | DISC-12 | `--changed` with deleted/test/JS file | excluded |
 | DISC-13 | spaces and Unicode in file path | preserved |
 
-Reference: `crapper-master/tests/test_cli.py`,
-`tests/test_edges.py`, `src/crapper/discover.py`, `src/crapper/cli.py`.
+See `test/unit/discover.test.ts`, `test/integration/cli.test.ts`, `src/discover.ts`.
 
 ## 3. Namespace derivation
 
@@ -68,9 +66,7 @@ Assume root `/repo`.
 | NS-07 | nested class `Outer.Inner` method | `module.Outer.Inner` |
 | NS-08 | object `api.admin.run` | namespace `module.api.admin`, name `run` |
 
-NS-03 through NS-08 are v1 decisions. Reference inherited path behavior:
-`crapper-master/tests/test_typescript.py`,
-`tests/test_edges.py::test_typescript_namespaces_and_declarations_without_bodies`.
+NS-03 through NS-08 are v1 decisions. See `test/unit/parser.test.ts`.
 
 ## 4. Function extraction
 
@@ -97,9 +93,7 @@ NS-03 through NS-08 are v1 decisions. Reference inherited path behavior:
 | FN-19 | declaration file | not selected |
 | FN-20 | two equal compatibility keys | entries retained + duplicate diagnostic |
 
-Inherited subset reference:
-`crapper-master/tests/test_typescript.py`,
-`tests/test_edges.py::test_typescript_namespaces_and_declarations_without_bodies`.
+See `test/unit/parser.test.ts` and `docs/compiler-api-analysis-rules.md`.
 
 ## 5. Complexity
 
@@ -126,10 +120,7 @@ Use one function around each expression unless noted.
 | CC-17 | nested class method with `if` | parent unchanged; nested local class not an entry |
 | CC-18 | 1,200-term generated expression | completes without stack overflow |
 
-Inherited references:
-`crapper-master/tests/test_typescript.py`,
-`src/crapper/languages/typescript.py`,
-`src/crapper/languages/treesitter.py`.
+See `test/unit/parser.test.ts` and `src/parser/complexity.ts`.
 
 ## 6. Source ranges and offsets
 
@@ -175,7 +166,7 @@ snapshots.
 | ROUTE-11 | callback contains ternary | callback CC 2, parent does not include it |
 | ROUTE-12 | ordinary `.map` callback | no entry; parent includes decisions |
 
-Reference: `crapper-master/tests/test_typescript.py`.
+See `test/unit/parser.test.ts`.
 
 ## 8. LCOV parsing and matching
 
@@ -199,8 +190,7 @@ Reference: `crapper-master/tests/test_typescript.py`.
 | LCOV-16 | user report under `coverage/lcov.info` | loaded |
 | LCOV-17 | generated report under `target/coverage/...` | loaded |
 
-References: `crapper-master/tests/test_coverage.py`,
-`tests/test_edges.py`, `src/crapper/coverage.py`.
+See `test/unit/lcov.test.ts` and `src/coverage/`.
 
 ## 9. Output and sorting
 
@@ -323,43 +313,21 @@ integration.
 | RUN-09 | failed command with stale report | stale report ignored |
 | RUN-10 | cleanup target outside tool directory | refuse deletion |
 
-Reference: `crapper-master/tests/test_runners.py`,
-`src/crapper/runners.py`.
+See `src/coverage/run.ts` (runner tests deferred in v1).
 
-## 13. Differential compatibility suite
+## 13. Differential compatibility suite (optional, external)
 
-The differential suite is a development aid, not a runtime dependency.
+The differential suite is **optional** and not part of the product or CI. The
+legacy Python reference is no longer vendored in this repository. To compare
+against it, check out that project separately at a pinned commit, run both CLIs
+on the same fixture tree with `--use-existing-coverage`, parse both EDN
+documents, and compare `(namespace, name)` fields.
 
-### Reference setup
-
-```bash
-cd crapper-master
-python3 -m venv .venv
-.venv/bin/pip install -e '.[dev]'
-```
-
-The Python tool may download tree-sitter grammars on first parse. Pin the
-reference commit and dependency lock/snapshot used for comparisons.
-
-### Comparison procedure
-
-1. Run both tools against the same temporary TS-only fixture project with
-   `--use-existing-coverage`.
-2. Parse both EDN documents.
-3. Compare legacy fields by `(namespace, name)`.
-4. Classify differences:
-   - `unexpected`;
-   - `typescript-crapper-v1 improvement`;
-   - `known namespace/range policy difference`.
-5. Store accepted differences in a reviewed data file with fixture ID, old
-   value, new value, and rationale.
-
-Expected intentional differences include generators, class-field arrows,
-object methods, logical assignments, lexical TS namespaces, getters/setters,
-and root-stable namespace derivation.
-
-No unexpected difference may be hidden by numeric tolerances; CRAP values are
-compared after four-decimal rounding.
+Classify differences as `unexpected`, `typescript-crapper-v1 improvement`, or
+`known namespace/range policy difference`. Document accepted deltas in a
+reviewed data file. Expected v1 improvements include generators, class-field
+arrows, object methods, logical assignments, lexical TS namespaces,
+getters/setters, and root-stable namespace derivation.
 
 ## Definition of done
 
