@@ -9,7 +9,8 @@ Metric version: **typescript-crapper-v1**
 - Node.js 20+ (tested on Node 22 LTS)
 - npm 10+
 
-No Python runtime is required.
+No Python runtime is required. Metric behavior is defined by `docs/v1-decisions.md`
+and the `test/` suite (the legacy Python reference is not vendored in this repo).
 
 ## Install
 

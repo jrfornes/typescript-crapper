@@ -1,8 +1,13 @@
-# `crapper-master` source architecture
+# Legacy Python crapper architecture
+
+> **Historical note:** This document describes the former multi-language Python
+> reference tool (tree-sitter, six language families). That source tree is **not
+> vendored** in this repository. Current behavior is defined by
+> `v1-decisions.md`, `compiler-api-analysis-rules.md`, and `test/`.
 
 ## Purpose
 
-`crapper-master` measures each discovered function's cyclomatic complexity,
+The legacy Python crapper measured each discovered function's cyclomatic complexity,
 combines it with test coverage, prints a report, and writes a snapshot consumed
 by uml-viewer. It supports six language families, but the target project only
 needs the TypeScript path.

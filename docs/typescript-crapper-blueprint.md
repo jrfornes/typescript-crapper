@@ -4,7 +4,7 @@
 
 Build a Node.js CLI written in TypeScript that computes CRAP scores for
 TypeScript code without requiring Python. Preserve the useful behavioral
-contract of `crapper-master`, while making deviations explicit and tested.
+contract of the legacy Python crapper, while making deviations explicit and tested.
 
 This is an implementation plan, not a claim about current code.
 
@@ -239,7 +239,7 @@ replace EDN compatibility by accident.
 
 Port source snippets and expected entries from:
 
-- `crapper-master/tests/test_typescript.py`;
+- `test/unit/parser.test.ts` (ported fixtures);
 - TypeScript and path cases in `test_edges.py`;
 - LCOV cases in `test_coverage.py`;
 - TypeScript command cases in `test_runners.py`;
@@ -276,7 +276,7 @@ resolution, shell invocation, and rename semantics differ.
 
 ### Differential harness
 
-While `crapper-master` is available, create a temporary corpus, run both tools
+Optionally, with an external checkout of the legacy Python tool, create a temporary corpus, run both tools
 with `--use-existing-coverage`, and compare normalized EDN entries. This is the
 fastest way to detect unintended parser/range/coverage drift. Exclude intended
 improvements with named allow-list fixtures rather than broad tolerances.

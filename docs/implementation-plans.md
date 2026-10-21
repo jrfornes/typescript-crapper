@@ -6,7 +6,7 @@ This document provides two executable plans for building
 - **Plan A — TypeScript Compiler API:** recommended when the goal is the best
   TypeScript analysis and long-term maintainability.
 - **Plan B — tree-sitter:** recommended when reproducing
-  `crapper-master` metrics is the primary requirement.
+  legacy Python metrics is the primary requirement.
 
 Both plans produce a TypeScript CLI with no Python runtime. They share the
 same scoring, LCOV, discovery, output, and verification layers.
@@ -19,7 +19,7 @@ the alternatives or recommendations in this document differ.
 | Requirement | Plan A: Compiler API | Plan B: tree-sitter |
 | --- | --- | --- |
 | Modern TypeScript coverage | Best | Good, grammar-dependent |
-| Exact `crapper-master` parity | Requires translation fixtures | Best |
+| Exact legacy Python parity | Requires translation fixtures | Best |
 | Malformed-file recovery | Moderate | Best |
 | Node packaging | Simpler | Native/WASM considerations |
 | Semantic information | Available if needed | Syntax only |
@@ -129,7 +129,7 @@ Create fixtures before writing the new analyzer.
 
 Tasks:
 
-- Port TypeScript examples from `crapper-master/tests/test_typescript.py`.
+- Port TypeScript examples into `test/fixtures` / `test/unit/parser.test.ts`.
 - Port namespace and unsupported-declaration cases from `test_edges.py`.
 - Port LCOV branch, line, missing-file, and path ambiguity cases.
 - Port CLI threshold, output, and file-discovery cases.
@@ -389,7 +389,7 @@ decorators, multiline signatures, trailing newlines, and non-ASCII text.
 
 ### A5. Compiler-API-specific verification
 
-- Compare every inherited fixture against `crapper-master`.
+- Compare every inherited fixture against the compatibility spec and `test/`.
 - Maintain an allow-list for intentional differences such as generators and
   class fields.
 - Test new TypeScript syntax when upgrading `typescript`.
@@ -411,7 +411,7 @@ Plan A is ready when:
 
 ## Plan B — tree-sitter compatibility implementation
 
-Choose this plan when matching `crapper-master` is more important than
+Choose this plan when matching the legacy Python tool is more important than
 improving TypeScript coverage.
 
 ### B1. Runtime selection
@@ -443,7 +443,7 @@ port so review can compare rules one by one.
 
 ### B3. Error handling improvement
 
-Unlike `crapper-master`, inspect tree error/missing nodes:
+Unlike the legacy Python tool, inspect tree error/missing nodes:
 
 - emit a warning with file and range;
 - continue with recovered entries by default;
@@ -481,7 +481,7 @@ difficult to classify as port defects or intended changes.
 
 Plan B is ready when:
 
-- valid-source fixture output matches `crapper-master`;
+- valid-source fixture output matches the legacy baseline or documented deltas;
 - malformed-source diagnostics are better without affecting recovered valid
   entries;
 - native/WASM packaging works on all supported platforms;
@@ -497,7 +497,7 @@ Use **Plan A** with the shared stages in this order:
 3. Compiler API parser and complexity rules.
 4. LCOV parser and path matching.
 5. Discovery and read-only CLI.
-6. Differential testing against `crapper-master`.
+6. Optional differential testing against an external legacy Python checkout.
 7. Automatic coverage generation.
 8. Packaging and release.
 

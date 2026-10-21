@@ -1,6 +1,6 @@
 # Decisions and risks
 
-`crapper-master` provides a useful baseline, but not every inherited behavior
+The legacy Python crapper provides a useful baseline, but not every inherited behavior
 should become permanent. Resolve the blocking decisions before implementation;
 record later choices as architecture decisions and fixtures.
 
@@ -25,7 +25,7 @@ Parser choice and function-form improvements can change scores. Choose between:
 
 - **compatibility first**: reproduce source results, then version changes;
 - **idiomatic TypeScript first**: score modern constructs and publish a
-  documented break from `crapper-master`.
+  documented break from the inherited baseline.
 
 Recommendation: preserve parity for existing constructs and add omitted
 constructs behind explicit fixtures. Treat score changes as user-visible API

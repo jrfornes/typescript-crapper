@@ -2,12 +2,9 @@
 
 ## Goal
 
-Implement `typescript-crapper` as a TypeScript/Node CLI that analyzes
-TypeScript source, combines cyclomatic complexity with LCOV coverage, and
-writes CRAP metrics. The shipped product must not require Python.
-
-`crapper-master/` is a read-only behavioral reference. Do not extend its
-multi-language Python implementation.
+Implement and maintain `typescript-crapper` as a TypeScript/Node CLI that
+analyzes TypeScript source, combines cyclomatic complexity with LCOV coverage,
+and writes CRAP metrics. The shipped product must not require Python.
 
 ## Start here
 
@@ -18,8 +15,8 @@ Read these documents in order:
    complexity rules.
 3. `docs/acceptance-test-matrix.md` — required automated behavior.
 4. `docs/implementation-plans.md` — execute Plan A and its shared stages.
-5. `docs/typescript-compatibility-spec.md` — inherited baseline.
-6. `docs/crapper-master-architecture.md` — source-system context.
+5. `docs/typescript-compatibility-spec.md` — inherited baseline (historical).
+6. `docs/crapper-master-architecture.md` — former Python pipeline (historical).
 
 If these disagree, the earlier document wins. Do not silently choose a
 different parser or reopen settled v1 decisions.
@@ -30,7 +27,7 @@ different parser or reopen settled v1 decisions.
 - Runtime: supported Node.js LTS releases.
 - Parser: public TypeScript Compiler API from a pinned `typescript` package.
 - Input extensions: `.ts`, `.tsx`, `.mts`, `.cts`.
-- Coverage: LCOV.
+- Coverage: LCOV (`coverage/**/lcov.info`, not HTML reports).
 - Compatibility output: `.metrics/crap.edn`.
 - Metric version: `typescript-crapper-v1`.
 - Final default: generate coverage; also support existing-coverage and
@@ -47,7 +44,7 @@ Implement vertical slices in this order:
    handlers.
 4. LCOV parsing, merging, path matching and function percentages.
 5. Discovery, Git selection and read-only CLI modes.
-6. End-to-end golden project and differential checks.
+6. End-to-end golden project and fixture checks.
 7. Coverage generation for npm/Vitest/c8.
 8. Packed-artifact and cross-platform verification.
 
@@ -72,7 +69,8 @@ before one path works end to end.
 
 ## Testing rules
 
-- Convert `docs/acceptance-test-matrix.md` rows into explicit tests.
+- Convert `docs/acceptance-test-matrix.md` rows into explicit tests under
+  `test/`.
 - Prefer input/output tests for pure modules.
 - Mock filesystem/process boundaries in unit tests.
 - Use temporary directories for CLI integration tests.
@@ -85,24 +83,18 @@ Do not update expected metrics merely to make a failing test pass. Determine
 whether the implementation violates the metric rules or the metric version
 must intentionally change.
 
-## Behavioral source anchors
-
-Use these only to understand inherited behavior:
+## In-repo source of truth
 
 | Concern | Reference |
 | --- | --- |
-| Formula and sorting | `crapper-master/src/crapper/crap.py` |
-| Pipeline | `crapper-master/src/crapper/analyze.py` |
-| Discovery and CLI | `crapper-master/src/crapper/discover.py`, `cli.py` |
-| TypeScript tree-sitter rules | `crapper-master/src/crapper/languages/typescript.py` |
-| Iterative complexity | `crapper-master/src/crapper/languages/treesitter.py` |
-| LCOV and path matching | `crapper-master/src/crapper/coverage.py` |
-| Coverage commands | `crapper-master/src/crapper/runners.py` |
-| EDN and console | `crapper-master/src/crapper/metrics.py`, `report.py` |
-| Characterization tests | `crapper-master/tests/test_typescript.py`, `test_coverage.py`, `test_edges.py`, `test_runners.py`, `test_cli.py`, `test_crap.py` |
-
-The Python UML artifact is stale and references a missing language factory.
-Do not reproduce that abstraction.
+| Formula and sorting | `src/scoring.ts` |
+| Pipeline | `src/analyze.ts`, `src/cli.ts` |
+| Discovery and CLI | `src/discover.ts`, `src/options.ts` |
+| Parser and complexity | `src/parser/` |
+| LCOV and path matching | `src/coverage/` |
+| Coverage commands | `src/coverage/run.ts` |
+| EDN and console | `src/output/` |
+| Automated behavior | `test/unit/`, `test/integration/` |
 
 ## Scope control
 
@@ -114,18 +106,18 @@ Version 1 does not include:
 - `tsconfig` alias-based namespaces;
 - mutation testing;
 - historical identity across renames;
-- JSON/SARIF/HTML output unless separately requested;
+- JSON/SARIF/HTML coverage input;
 - automatic provider installation.
 
 Keep extension points small, but do not build speculative plugin systems.
 
 ## Completion handoff
 
-A completed implementation must report:
+A completed change should report:
 
 - supported Node and package-manager versions;
 - commands run for type-check, tests, packaging, and smoke verification;
 - acceptance rows intentionally deferred, if any;
-- expected differences from `crapper-master`;
+- intentional metric or compatibility differences documented in `docs/`;
 - metric-version changes, if any;
 - coverage-generation and parse diagnostics demonstrated in tests.

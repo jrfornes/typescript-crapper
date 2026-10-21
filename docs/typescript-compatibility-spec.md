@@ -1,6 +1,7 @@
 # TypeScript compatibility specification
 
-This document describes observable behavior in `crapper-master`. Each rule can
+This document describes observable behavior inherited from the legacy Python
+multi-language crapper (historical baseline). Each rule can
 become a fixture or unit test in `typescript-crapper`. Items marked as gaps are
 not recommendations; they describe current behavior that needs an explicit
 compatibility decision.
